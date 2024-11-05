@@ -4,6 +4,11 @@ import edu.rit.swen253.page.sample.RatingInfoView;
 import edu.rit.swen253.page.sample.RitHomePage;
 import edu.rit.swen253.test.AbstractWebTest;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
