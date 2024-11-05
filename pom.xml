@@ -117,6 +117,9 @@
         </dependencies>
         <configuration>
           <argLine>-DbrowserType=${browser.type} -DscreenMode=${screen.mode}</argLine>
+          <systemPropertyVariables>
+              <GECKO_PATH>/opt/homebrew/bin/geckodriver</GECKO_PATH>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
 
@@ -124,7 +127,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-report-plugin</artifactId>
         <version>${maven.surefire.version}</version>
+
       </plugin>
+
+
       <!-- END: Testing plugins -->
 
     </plugins>

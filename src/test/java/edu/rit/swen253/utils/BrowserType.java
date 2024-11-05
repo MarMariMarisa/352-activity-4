@@ -1,5 +1,9 @@
 package edu.rit.swen253.utils;
 
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Optional;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -12,10 +16,6 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.safari.SafariOptions;
-
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * An enumeration of browser types that are supported for Web UI testing.
@@ -58,7 +58,8 @@ public enum BrowserType {
         case WINDOWS ->
           System.setProperty("webdriver.gecko.driver", driverHome + "/windows/geckodriver.exe");
         case MAC_OSX ->
-          System.setProperty("webdriver.gecko.driver", driverHome + "/mac/geckodriver");
+          System.setProperty("webdriver.gecko.driver",
+              Optional.ofNullable(System.getProperty("GECKO_PATH")).orElse(driverHome + "/mac/geckodriver"));
         case LINUX ->
           System.setProperty("webdriver.gecko.driver", driverHome + "/linux/geckodriver");
       }
@@ -70,7 +71,7 @@ public enum BrowserType {
       profile.setAcceptUntrustedCertificates(true);
       profile.setAssumeUntrustedCertificateIssuer(false);
 
-      //Use No Proxy Settings
+      // Use No Proxy Settings
       profile.setPreference("network.proxy.type", 0);
       FirefoxOptions options = new FirefoxOptions(capabilities);
       options.setProfile(profile);
@@ -144,28 +145,27 @@ public enum BrowserType {
     WebDriver buildDriver(DesiredCapabilities capabilities) {
       throw new RuntimeException("not yet supported");
     }
-  }
-  ;
+  };
 
   /**
    * Discover the {@linkplain BrowserType browser type} from the
    * custom Java property, {@code browserType}.
    *
-   * @return  the {@link BrowserType} to run the UI tests against
+   * @return the {@link BrowserType} to run the UI tests against
    *
-   * @throws IllegalArgumentException  if the BrowserType is not recognized
+   * @throws IllegalArgumentException if the BrowserType is not recognized
    */
   public static BrowserType discover() {
     return Optional.ofNullable(System.getProperty("browserType"))
-      .map(BrowserType::valueOf)
-      .orElse(BrowserType.CHROME);
+        .map(BrowserType::valueOf)
+        .orElse(BrowserType.CHROME);
   }
 
   /**
    * Query whether the current browser matches the specified browser.
    *
    * @see BrowserType#discover()
-   * @param browser  the specific browser to test
+   * @param browser the specific browser to test
    * @return {@code true} if the current browser matches the specified browser
    */
   public static boolean onBrowser(final BrowserType browser) {
@@ -176,7 +176,7 @@ public enum BrowserType {
    * Query whether the current browser matches one of the specified types.
    *
    * @see BrowserType#discover()
-   * @param types  the collector of browsers to test
+   * @param types the collector of browsers to test
    * @return {@code true} if the current browser matches on of these {@code types}
    */
   public static boolean onOneOfTheseBrowsers(BrowserType... types) {
@@ -187,8 +187,7 @@ public enum BrowserType {
    * Drivers must be stored under the {@code drivers/} directory in the root of
    * the Maven project.
    */
-  private static final Path driverHome =
-    Path.of(System.getProperty("user.dir")).resolve("drivers");
+  private static final Path driverHome = Path.of(System.getProperty("user.dir")).resolve("drivers");
 
   /**
    * Configure the Selenium driver based upon the host operating system.
@@ -200,4 +199,3 @@ public enum BrowserType {
    */
   abstract WebDriver buildDriver(DesiredCapabilities capabilities);
 }
-
