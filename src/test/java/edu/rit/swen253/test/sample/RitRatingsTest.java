@@ -1,18 +1,18 @@
 package edu.rit.swen253.test.sample;
 
-import edu.rit.swen253.page.sample.RatingInfoView;
-import edu.rit.swen253.page.sample.RitHomePage;
-import edu.rit.swen253.test.AbstractWebTest;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import edu.rit.swen253.page.sample.RatingInfoView;
+import edu.rit.swen253.page.sample.RitHomePage;
+import edu.rit.swen253.test.AbstractWebTest;
 
 /**
  * A simple test that explores RIT's ratings on their home page.
@@ -47,7 +47,7 @@ public class RitRatingsTest extends AbstractWebTest {
     final List<RatingInfoView> ratingInfoViews = homePage.getRatingViews();
     assertEquals(6, ratingInfoViews.size(), "Number of views should be 6");
     // prepare for next test
-    firstRatingInfo = ratingInfoViews.getFirst();
+    firstRatingInfo = ratingInfoViews.get(0);
   }
 
   /**
@@ -56,9 +56,7 @@ public class RitRatingsTest extends AbstractWebTest {
   @Test
   @Order(3)
   public void inspectFirstRatingInfo() {
-    assertAll("group assertions"
-      , () -> assertEquals("5th", firstRatingInfo.getRating())
-      , () -> assertEquals("Among Top Schools for Co-op or Internship Programs", firstRatingInfo.getTitle())
-    );
+    assertAll("group assertions", () -> assertEquals("6th", firstRatingInfo.getRating()),
+        () -> assertEquals("Among Top Schools for Co-op or Internship Programs", firstRatingInfo.getTitle()));
   }
 }
